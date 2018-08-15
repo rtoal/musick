@@ -6,7 +6,13 @@
     <link rel="stylesheet" href="/styles/musick.css">
   </head>
   <body>
-    <header>Welcome to Musick</header>
+    <header>
+      {% if nickname %}
+        {{ nickname }} •
+      {% endif %}
+      <a href="{{ auth_url }}">{{ auth_text }}</a>
+      <h1>Musick The App</h1>
+    </header>
     <nav>
       <ul>
         <li>Songs
@@ -14,6 +20,13 @@
         <li>Albums
       </ul>
     </nav>
-    <section>Musick is the best app ever</section>
+    <section>
+      {% if nickname %}
+        <p>Welcome to Musick.</p>
+        <p>Choose a menu item on the left to get started.</p>
+      {% else %}
+        <p>Hi, consider signing in!</p>
+      {% endif %}
+    </section>
   </body>
 </html>
