@@ -5,6 +5,13 @@
     <title></title>
   </head>
   <body>
+    <header>
+      {% if nickname %}
+        {{ nickname }} •
+      {% endif %}
+      <a href="{{ auth_url }}">{{ auth_text }}</a>
+      <h1>Musick The App</h1>
+    </header>
     <h1>Artists</h1>
     <p>Choose an artist:</p>
     <form method="post" action="/artist">

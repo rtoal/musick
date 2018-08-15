@@ -11,27 +11,28 @@ jinja_env = jinja2.Environment(
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
+def get_auth():
+    user = users.get_current_user()
+    nickname = None
+    if user:
+        nickname = user.nickname()
+        auth_url = users.create_logout_url('/')
+    else:
+        auth_url = users.create_login_url('/')
+    return {
+        "nickname": nickname,
+        "auth_url": auth_url,
+        "auth_text": "Sign out" if user else "Sign in"}
+
 class WelcomeHandler(webapp2.RequestHandler):
     def get(self):
-        user = users.get_current_user()
-        nickname = None
-        if user:
-            nickname = user.nickname()
-            auth_url = users.create_logout_url('/')
-        else:
-            auth_url = users.create_login_url('/')
-        welcome_template = jinja_env.get_template("templates/welcome.html")
-        self.response.write(welcome_template.render({
-            "nickname": nickname,
-            "auth_url": auth_url,
-            "auth_text": "Sign out" if user else "Sign in",
-        }))
+        template = jinja_env.get_template("templates/welcome.html")
+        self.response.write(template.render(get_auth()))
 
 class ArtistsHandler(webapp2.RequestHandler):
     def get(self):
-        artists_template = jinja_env.get_template(
-            "templates/artists.html")
-        self.response.write(artists_template.render())
+        template = jinja_env.get_template("templates/artists.html")
+        self.response.write(template.render(get_auth()))
 
 class GoodbyeHandler(webapp2.RequestHandler):
     def get(self):
